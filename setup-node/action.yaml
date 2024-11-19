@@ -2,8 +2,11 @@ name: 'setup-node'
 description: 'setup node'
 
 inputs:
+  nodeVersion:
+    description: 'Node.js version'
+    required: false
   disabledCache:
-    description: Disable cache
+    description: 'Disable cache'
     required: false
     default: false
 
@@ -11,13 +14,14 @@ runs:
   using: 'composite'
   steps:
     - name: Get Node.js version from volta
+      if: ${{ !inputs.nodeVersion }}
       shell: bash
       run: echo "NODE_VERSION=$(jq -r .volta.node package.json)" >> $GITHUB_ENV
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ env.NODE_VERSION }}
+        node-version: ${{ inputs.nodeVersion || env.NODE_VERSION }}
 
     - name: Cache node modules
       if: ${{ inputs.disabledCache != 'true' }}
