@@ -2,6 +2,10 @@ name: 'setup-node'
 description: 'setup node'
 
 inputs:
+  use-mise:
+    description: 'Use mise'
+    required: false
+    default: 'false'
   node-version:
     description: 'Node.js version'
     required: false
@@ -11,28 +15,35 @@ inputs:
   disabled-cache:
     description: 'Disable cache'
     required: false
-    default: false
+    default: 'false'
 
 runs:
   using: 'composite'
   steps:
+    - name: Setup Environment with mise
+      if: ${{ inputs.use-mise == 'true' }}
+      uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
+      with:
+        cache: false
+
     - name: Get Node.js version from volta
-      if: ${{ !inputs.node-version }}
+      if: ${{ inputs.use-mise != 'true' && !inputs.node-version }}
       shell: bash
       run: echo "NODE_VERSION=$(jq -r .volta.node package.json)" >> $GITHUB_ENV
 
     - name: Get npm version from volta
-      if: ${{ !inputs.npm-version }}
+      if: ${{ inputs.use-mise != 'true' && !inputs.npm-version }}
       shell: bash
       run: echo "NPM_VERSION=$(jq -r .volta.npm package.json)" >> $GITHUB_ENV
 
     - name: Setup Node.js
+      if: ${{ inputs.use-mise != 'true' }}
       uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6
       with:
         node-version: ${{ inputs.node-version || env.NODE_VERSION }}
 
     - name: Setup npm version
-      if: ${{ inputs.npm-version || env.NPM_VERSION }}
+      if: ${{ inputs.use-mise != 'true' && (inputs.npm-version || env.NPM_VERSION) }}
       shell: bash
       run: npm install -g npm@${{ inputs.npm-version || env.NPM_VERSION }}
 
