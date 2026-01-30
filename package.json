@@ -1,0 +1,30 @@
+{
+  "name": "@pplancq/actions",
+  "version": "0.0.0",
+  "packageManager": "npm@11.8.0",
+  "private": true,
+  "description": "A repository for storing reusable actions",
+  "homepage": "https://github.com/pplancq/actions#readme",
+  "bugs": {
+    "url": "https://github.com/pplancq/actions/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pplancq/actions.git"
+  },
+  "license": "MIT",
+  "author": "Paul PLANCQ <paul.plancq@outlook.fr>",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
+    "semantic-release": "^25.0.2"
+  }
+}
