@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: 'Dry run'
+        required: false
+        type: boolean
+        default: false
+      debug:
+        description: 'Debug mode'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  HUSKY: 0
+
+jobs:
+  release:
+    if: github.event_name == 'workflow_dispatch' && github.actor == 'pplancq'
+    name: Release
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: pplancq/actions/setup-node@main
+        with:
+          use-mise: true
+
+      - name: Install package
+        run: npm ci --ignore-scripts
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTHOR_EMAIL: release[bot]@users.noreply.github.com
+          GIT_AUTHOR_NAME: release[bot]
+          GIT_COMMITTER_EMAIL: release[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: release[bot]
+        run: |
+          ARGS=""
+          if [ "${{ github.event.inputs.dryRun }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ github.event.inputs.debug }}" = "true" ]; then
+            ARGS="$ARGS --debug"
+          fi
+          npm run release -- $ARGS
