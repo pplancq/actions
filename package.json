@@ -16,7 +16,7 @@
   "author": "Paul PLANCQ <paul.plancq@outlook.fr>",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "release": "semantic-release"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
