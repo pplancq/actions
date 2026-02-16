@@ -1,7 +1,7 @@
 {
   "name": "@pplancq/actions",
   "version": "0.0.0",
-  "packageManager": "npm@11.9.0",
+  "packageManager": "npm@11.10.0",
   "private": true,
   "description": "A repository for storing reusable actions",
   "homepage": "https://github.com/pplancq/actions#readme",
