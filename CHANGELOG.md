@@ -1,3 +1,14 @@
+## [1.0.1](https://github.com/pplancq/actions/compare/v1.0.0...v1.0.1) (2026-03-30)
+
+### Bug Fixes
+
+* **deps:** update actions/cache digest to 6682284 ([#37](https://github.com/pplancq/actions/issues/37)) ([bee38c6](https://github.com/pplancq/actions/commit/bee38c6f1b99f1244c3842fbd3f6ec6fe1a39884))
+* **deps:** update actions/setup-node digest to 53b8394 ([#31](https://github.com/pplancq/actions/issues/31)) ([cce2bb8](https://github.com/pplancq/actions/commit/cce2bb83d5ca790b9473736d696f8e2921994bf3))
+* **deps:** update jdx/mise-action action to v4 ([#36](https://github.com/pplancq/actions/issues/36)) ([fa2689c](https://github.com/pplancq/actions/commit/fa2689c25075e2866c7865527f8c8da001090efb))
+* **deps:** update jdx/mise-action digest to 1648a78 ([#39](https://github.com/pplancq/actions/issues/39)) ([011f340](https://github.com/pplancq/actions/commit/011f3403029af4d63e8ec8385ce8736a29ed9cbd))
+* **deps:** update jdx/mise-action digest to 5228313 ([#33](https://github.com/pplancq/actions/issues/33)) ([08ddfae](https://github.com/pplancq/actions/commit/08ddfaeed0399f05d9666ccaba9469422f3c2611))
+* **deps:** update jdx/mise-action digest to e79ddf6 ([#30](https://github.com/pplancq/actions/issues/30)) ([4bd4d05](https://github.com/pplancq/actions/commit/4bd4d05897da3a28658fb4f1ba6c1b7e22b30a47))
+
 ## 1.0.0 (2026-01-30)
 
 ### Features
