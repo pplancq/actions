@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/pplancq/actions/compare/v1.0.1...v1.0.2) (2026-04-14)
+
+### Bug Fixes
+
+* **deps:** update actions/cache digest to 27d5ce7 ([#51](https://github.com/pplancq/actions/issues/51)) ([5172671](https://github.com/pplancq/actions/commit/517267129b7d305af446387099c5a333f90a2217))
+
 ## [1.0.1](https://github.com/pplancq/actions/compare/v1.0.0...v1.0.1) (2026-03-30)
 
 ### Bug Fixes
