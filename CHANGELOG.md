@@ -1,3 +1,13 @@
+## [1.1.0](https://github.com/pplancq/actions/compare/v1.0.2...v1.1.0) (2026-05-20)
+
+### Features
+
+* add action to update PR limits in renovate.json ([badcb41](https://github.com/pplancq/actions/commit/badcb4145f3cb77244925cedd0a12a6e9f9d610a))
+
+### Bug Fixes
+
+* **deps:** update actions/setup-node digest to 48b55a0 ([#53](https://github.com/pplancq/actions/issues/53)) ([e19ad84](https://github.com/pplancq/actions/commit/e19ad847088146d9be4e1184abe28defd2d1f3ef))
+
 ## [1.0.2](https://github.com/pplancq/actions/compare/v1.0.1...v1.0.2) (2026-04-14)
 
 ### Bug Fixes
