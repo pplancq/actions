@@ -1,0 +1,48 @@
+name: 'renovate-update-limits'
+description: 'Update prConcurrentLimit and prHourlyLimit in .github/renovate.json'
+
+inputs:
+  limit:
+    description: 'New limit for prConcurrentLimit and prHourlyLimit (e.g. 5, 0 = unlimited), or "reset" to remove local overrides and restore shared config defaults.'
+    required: true
+    default: 'reset'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Validate input
+      shell: bash
+      run: |
+        INPUT="${{ inputs.limit }}"
+        if [ "$INPUT" != "reset" ] && ! echo "$INPUT" | grep -qE '^[0-9]+$'; then
+          echo "::error::Invalid input '$INPUT'. Must be a non-negative integer or 'reset'."
+          exit 1
+        fi
+
+    - name: Update renovate.json
+      shell: bash
+      run: |
+        INPUT="${{ inputs.limit }}"
+        if [ "$INPUT" = "reset" ]; then
+          jq 'del(.prConcurrentLimit, .prHourlyLimit)' .github/renovate.json > .github/renovate.json.tmp
+        else
+          jq --argjson limit "$INPUT" \
+            '.prConcurrentLimit = $limit | .prHourlyLimit = $limit' \
+            .github/renovate.json > .github/renovate.json.tmp
+        fi
+        mv .github/renovate.json.tmp .github/renovate.json
+
+    - name: Commit and push if changed
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git diff --quiet .github/renovate.json && echo "No changes, skipping commit." && exit 0
+        git add .github/renovate.json
+        INPUT="${{ inputs.limit }}"
+        if [ "$INPUT" = "reset" ]; then
+          git commit -m "ci(renovate): reset PR limits to shared config defaults"
+        else
+          git commit -m "ci(renovate): set prConcurrentLimit and prHourlyLimit to $INPUT"
+        fi
+        git push
