@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/pplancq/actions/compare/v1.1.0...v1.1.1) (2026-06-29)
+
+### Bug Fixes
+
+* **deps:** update actions/cache action to v6 ([#68](https://github.com/pplancq/actions/issues/68)) ([8fdfbe4](https://github.com/pplancq/actions/commit/8fdfbe4b29fe826ba574a21b7634f78612cbeb27))
+* **deps:** update actions/cache digest to 55cc834 ([#70](https://github.com/pplancq/actions/issues/70)) ([a72c813](https://github.com/pplancq/actions/commit/a72c81386e924cafd5745f0306f58cf389cd79e5))
+* **deps:** update jdx/mise-action digest to dba1968 ([#62](https://github.com/pplancq/actions/issues/62)) ([7bf794b](https://github.com/pplancq/actions/commit/7bf794b350ada9a793b5c3243add03d95c3bcd7c))
+* **deps:** update jdx/mise-action digest to e6a8b39 ([#65](https://github.com/pplancq/actions/issues/65)) ([f0012ed](https://github.com/pplancq/actions/commit/f0012edc4b0089ce77fa6ba1251aa37486c9e2af))
+
 ## [1.1.0](https://github.com/pplancq/actions/compare/v1.0.2...v1.1.0) (2026-05-20)
 
 ### Features
