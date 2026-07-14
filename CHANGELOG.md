@@ -1,5 +1,10 @@
 ## [1.1.2](https://github.com/pplancq/actions/compare/v1.1.1...v1.1.2) (2026-07-14)
 
+### Bug Fixes
+
+* **deps:** update actions/setup-node action to v7 ([#78](https://github.com/pplancq/actions/issues/78)) ([72da249](https://github.com/pplancq/actions/commit/72da249c9e0229998dfdd012c84a14919f0384b9))
+* **deps:** update actions/setup-node digest to 2499707 ([#77](https://github.com/pplancq/actions/issues/77)) ([dfe8f75](https://github.com/pplancq/actions/commit/dfe8f755dd65cde45f231739c4671933d41b1a1d))
+
 ## [1.1.1](https://github.com/pplancq/actions/compare/v1.1.0...v1.1.1) (2026-06-29)
 
 ### Bug Fixes
