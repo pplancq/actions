@@ -3,6 +3,16 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
+      releaseType:
+        description: 'Release type'
+        required: true
+        type: choice
+        default: 'stable'
+        options:
+          - stable
+          - alpha
+          - beta
+          - rc
       dryRun:
         description: 'Dry run'
         required: false
@@ -13,6 +23,9 @@ on:
         required: false
         type: boolean
         default: false
+
+permissions:
+  contents: read
 
 env:
   HUSKY: 0
@@ -48,11 +61,20 @@ jobs:
           GIT_COMMITTER_EMAIL: release[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: release[bot]
         run: |
-          ARGS=""
+          RELEASE_TYPE="${{ github.event.inputs.releaseType }}"
+          ARGS=("--skip-publish")
+
+          if [ "$RELEASE_TYPE" != "stable" ]; then
+            ARGS=("prerelease" "${ARGS[@]}")
+            ARGS+=("--preid" "$RELEASE_TYPE")
+          fi
+
           if [ "${{ github.event.inputs.dryRun }}" = "true" ]; then
-            ARGS="$ARGS --dry-run"
+            ARGS+=("--dry-run")
           fi
+
           if [ "${{ github.event.inputs.debug }}" = "true" ]; then
-            ARGS="$ARGS --debug"
+            ARGS+=("--verbose")
           fi
-          npm run release -- $ARGS
+
+          npx nx release "${ARGS[@]}"
