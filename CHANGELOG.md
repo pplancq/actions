@@ -1,3 +1,25 @@
+## 1.1.3 (2026-10-06)
+
+### 🎉 Features
+
+- **release:** migrate from semantic-release to nx release ([#105](https://github.com/pplancq/actions/pull/105))
+
+### 📦 Dependencies
+
+- **deps:** update jdx/mise-action digest to 2d8d4ca ([#104](https://github.com/pplancq/actions/pull/104))
+- **deps:** update jdx/mise-action digest to 7a4e45a ([#102](https://github.com/pplancq/actions/pull/102))
+- **deps:** update jdx/mise-action action to v5 ([#100](https://github.com/pplancq/actions/pull/100))
+- **deps:** update jdx/mise-action digest to c2a8761 ([#95](https://github.com/pplancq/actions/pull/95))
+- **deps:** update jdx/mise-action digest to 3c2e0cf ([#92](https://github.com/pplancq/actions/pull/92))
+- **deps:** update jdx/mise-action digest to 7e36c90 ([#88](https://github.com/pplancq/actions/pull/88))
+- **deps:** update jdx/mise-action digest to 9e7f763 ([#85](https://github.com/pplancq/actions/pull/85))
+- **deps:** update jdx/mise-action digest to f10502f ([#83](https://github.com/pplancq/actions/pull/83))
+- **deps:** update jdx/mise-action digest to dad1bfd ([#80](https://github.com/pplancq/actions/pull/80))
+
+### ❤️ Thank You
+
+- Paul PLANCQ
+
 ## [1.1.2](https://github.com/pplancq/actions/compare/v1.1.1...v1.1.2) (2026-07-14)
 
 ### Bug Fixes
