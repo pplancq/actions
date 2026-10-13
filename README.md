@@ -4,9 +4,119 @@ A repository for storing reusable actions.
 
 | Action | Description |
 |---|---|
-| [`setup-node`](./setup-node/action.yaml) | Set up Node.js and npm (with mise or Volta metadata) and cache `node_modules` |
-| [`renovate-update-limits`](./renovate-update-limits/action.yaml) | Update `prConcurrentLimit` and `prHourlyLimit` in `.github/renovate.json` |
+| [`setup-node`](#setup-node) | Set up Node.js and npm (with mise or Volta metadata) and cache `node_modules` |
+| [`renovate-update-limits`](#renovate-update-limits) | Update `prConcurrentLimit` and `prHourlyLimit` in `.github/renovate.json` |
 | [`nx-release`](#nx-release) | Install, build and run Nx Release with the correct npm dist-tag |
+
+## setup-node
+
+Sets up Node.js and npm, then caches `node_modules`. The repository must be checked out first, because the action reads
+`package.json` or the mise configuration.
+
+### Inputs
+
+| Input | Required | Default | Description |
+|---|---|---|---|
+| `use-mise` | no | `false` | `true` installs the tools declared in the repository's mise configuration (`mise.toml`) with `jdx/mise-action`. |
+| `node-version` | no | – | Node.js version (without mise). Defaults to `volta.node` from `package.json`. |
+| `npm-version` | no | – | npm version (without mise). Defaults to `volta.npm` from `package.json`; installed globally when set. |
+| `disabled-cache` | no | `false` | `true` disables the `node_modules` cache. |
+
+### How versions are resolved
+
+| Mode | Node.js / npm versions |
+|---|---|
+| `use-mise: 'true'` | From `mise.toml` (`[tools]`). `node-version` and `npm-version` are ignored. |
+| otherwise | From the inputs, falling back to the `volta` section of `package.json` (read with `jq`). |
+
+### Cache
+
+When enabled, `**/node_modules` is cached with the key `npm-<os>-<workflow name>-modules-<hash of **/package-lock.json>`.
+The action only restores the cache: it does not install dependencies, so run `npm ci` yourself afterwards.
+
+### Example
+
+```yaml
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@<sha> # vX
+
+  - name: Setup Node
+    uses: pplancq/actions/setup-node@<sha> # vX.Y.Z
+    with:
+      use-mise: 'true'
+
+  - name: Install dependencies
+    run: npm ci
+```
+
+Without mise, versions come from `package.json`:
+
+```json
+{
+  "volta": {
+    "node": "24.21.0",
+    "npm": "12.2.0"
+  }
+}
+```
+
+## renovate-update-limits
+
+Updates `prConcurrentLimit` and `prHourlyLimit` in `.github/renovate.json`, commits the change and pushes it. Use it
+to temporarily slow down (or stop) Renovate pull requests, then restore the shared configuration defaults.
+
+### Inputs
+
+| Input | Required | Default | Description |
+|---|---|---|---|
+| `limit` | yes | `reset` | A non-negative integer applied to both `prConcurrentLimit` and `prHourlyLimit` (`0` = unlimited), or `reset` to delete both keys and fall back to the shared config. Any other value fails the action. |
+
+### Behavior
+
+- `limit: 5` sets both limits to `5` and commits `ci(renovate): set prConcurrentLimit and prHourlyLimit to 5`.
+- `limit: reset` removes both keys and commits `ci(renovate): reset PR limits to shared config defaults`.
+- If `.github/renovate.json` does not change, nothing is committed.
+- The commit is authored by `github-actions[bot]` and pushed to the current branch.
+
+### Requirements
+
+- The repository must be checked out on a branch (not a detached HEAD) with credentials that can push.
+- The calling job needs `permissions: contents: write`.
+- `jq` must be available (it is on GitHub-hosted runners).
+- The branch must allow pushes from `GITHUB_TOKEN` (no protection rule blocking it).
+
+### Example
+
+```yaml
+name: Renovate limits
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: Limit (integer, 0 = unlimited, or "reset")
+        required: true
+        default: reset
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@<sha> # vX
+
+      - name: Update Renovate limits
+        uses: pplancq/actions/renovate-update-limits@<sha> # vX.Y.Z
+        with:
+          limit: ${{ inputs.limit }}
+```
 
 ## nx-release
 
