@@ -160,6 +160,7 @@ history is required because Nx Release needs the tags and commits to compute the
 | `debug` | no | `false` | `true` adds `--verbose`. |
 | `build-command` | no | `npm run build` | Command executed after dependency installation. |
 | `skip-build` | no | `false` | `true` skips the build step entirely; `build-command` is then ignored. |
+| `skip-publish` | no | `false` | `true` adds `--skip-publish`: the version, changelog, tag and GitHub release are created but nothing is published to npm. |
 | `git-author-name` | no | `release[bot]` | Git author name of the release commit. |
 | `git-author-email` | no | `release[bot]@users.noreply.github.com` | Git author email of the release commit. |
 | `git-committer-name` | no | `release[bot]` | Git committer name of the release commit. |

@@ -22,6 +22,10 @@ inputs:
     description: 'Skip the build step entirely: true or false'
     required: false
     default: 'false'
+  skip-publish:
+    description: 'Skip the npm publish step (for private packages or repositories that are not published): true or false'
+    required: false
+    default: 'false'
   github-token:
     description: 'GitHub token used by Nx Release (commit, tag, GitHub release). Pass secrets.GITHUB_TOKEN.'
     required: true
@@ -101,6 +105,7 @@ runs:
         GIT_COMMITTER_EMAIL: ${{ inputs.git-committer-email }}
         RELEASE_TYPE: ${{ inputs.release-type }}
         DRY_RUN: ${{ inputs.dry-run }}
+        SKIP_PUBLISH: ${{ inputs.skip-publish }}
         DEBUG: ${{ inputs.debug }}
       run: |
         ARGS=("--yes")
@@ -108,6 +113,10 @@ runs:
         if [ "$RELEASE_TYPE" != "stable" ]; then
           ARGS=("prerelease" "${ARGS[@]}")
           ARGS+=("--preid" "$RELEASE_TYPE")
+        fi
+
+        if [ "$SKIP_PUBLISH" = "true" ]; then
+          ARGS+=("--skip-publish")
         fi
 
         if [ "$DRY_RUN" = "true" ]; then
