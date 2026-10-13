@@ -1,0 +1,131 @@
+name: 'nx-release'
+description: 'Setup Node.js, install dependencies, build and run Nx Release with the correct npm dist-tag.'
+
+inputs:
+  release-type:
+    description: 'Release type: stable, alpha, beta or rc'
+    required: false
+    default: 'stable'
+  dry-run:
+    description: 'Run Nx Release in dry-run mode (no commit, tag or publish): true or false'
+    required: false
+    default: 'false'
+  debug:
+    description: 'Run Nx Release with verbose output: true or false'
+    required: false
+    default: 'false'
+  build-command:
+    description: 'Command executed after dependency installation to build the project'
+    required: false
+    default: 'npm run build'
+  skip-build:
+    description: 'Skip the build step entirely: true or false'
+    required: false
+    default: 'false'
+  skip-publish:
+    description: 'Skip the npm publish step (for private packages or repositories that are not published): true or false'
+    required: false
+    default: 'false'
+  github-token:
+    description: 'GitHub token used by Nx Release (commit, tag, GitHub release). Pass secrets.GITHUB_TOKEN.'
+    required: true
+  git-author-name:
+    description: 'Git author name used for the release commit'
+    required: false
+    default: 'release[bot]'
+  git-author-email:
+    description: 'Git author email used for the release commit'
+    required: false
+    default: 'release[bot]@users.noreply.github.com'
+  git-committer-name:
+    description: 'Git committer name used for the release commit'
+    required: false
+    default: 'release[bot]'
+  git-committer-email:
+    description: 'Git committer email used for the release commit'
+    required: false
+    default: 'release[bot]@users.noreply.github.com'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Validate inputs
+      shell: bash
+      env:
+        RELEASE_TYPE: ${{ inputs.release-type }}
+      run: |
+        case "$RELEASE_TYPE" in
+          stable) NPM_DIST_TAG="latest" ;;
+          alpha | beta | rc) NPM_DIST_TAG="$RELEASE_TYPE" ;;
+          *)
+            echo "::error::Invalid release-type '$RELEASE_TYPE'. Must be one of: stable, alpha, beta, rc."
+            exit 1
+            ;;
+        esac
+
+        echo "NPM_CONFIG_TAG=$NPM_DIST_TAG" >> "$GITHUB_ENV"
+        echo "npm dist-tag: $NPM_DIST_TAG"
+
+    - name: Checkout repository
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      with:
+        fetch-depth: 0
+        token: ${{ inputs.github-token }}
+
+    - name: Setup Environment with mise
+      uses: jdx/mise-action@08ae2a091c038e1e05ec6f5115dc5c69d5a2a6b8 # v5
+      with:
+        cache: false
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci --ignore-scripts
+
+    - name: Run build
+      if: ${{ inputs.skip-build != 'true' }}
+      shell: bash
+      env:
+        BUILD_COMMAND: ${{ inputs.build-command }}
+      run: bash -e -o pipefail -c "$BUILD_COMMAND"
+
+    - name: Config npm
+      shell: bash
+      run: |
+        npm config set access=public
+        npm config set provenance=true
+
+    - name: Release
+      shell: bash
+      env:
+        HUSKY: 0
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        GIT_AUTHOR_NAME: ${{ inputs.git-author-name }}
+        GIT_AUTHOR_EMAIL: ${{ inputs.git-author-email }}
+        GIT_COMMITTER_NAME: ${{ inputs.git-committer-name }}
+        GIT_COMMITTER_EMAIL: ${{ inputs.git-committer-email }}
+        RELEASE_TYPE: ${{ inputs.release-type }}
+        DRY_RUN: ${{ inputs.dry-run }}
+        SKIP_PUBLISH: ${{ inputs.skip-publish }}
+        DEBUG: ${{ inputs.debug }}
+      run: |
+        ARGS=("--yes")
+
+        if [ "$RELEASE_TYPE" != "stable" ]; then
+          ARGS=("prerelease" "${ARGS[@]}")
+          ARGS+=("--preid" "$RELEASE_TYPE")
+        fi
+
+        if [ "$SKIP_PUBLISH" = "true" ]; then
+          ARGS+=("--skip-publish")
+        fi
+
+        if [ "$DRY_RUN" = "true" ]; then
+          ARGS+=("--dry-run")
+        fi
+
+        if [ "$DEBUG" = "true" ]; then
+          ARGS+=("--verbose")
+        fi
+
+        echo "Running: npx nx release ${ARGS[*]} (npm dist-tag: $NPM_CONFIG_TAG)"
+        npx nx release "${ARGS[@]}"
