@@ -141,7 +141,7 @@ In this order:
 
 1. Validates `release-type` (`stable`, `alpha`, `beta` or `rc`) and computes the npm dist-tag. Fails fast otherwise.
 2. Checks out the calling repository with the full Git history (`fetch-depth: 0`).
-3. Sets up Node.js and npm with [`setup-node`](./setup-node/action.yaml) (mise).
+3. Sets up Node.js and npm from the repository's mise configuration (`mise.toml`) with `jdx/mise-action`.
 4. Installs dependencies with `npm ci --ignore-scripts`.
 5. Runs the build command (unless `skip-build` is `true`). A failing build stops the job before the release.
 6. Configures npm for public publishing with provenance.

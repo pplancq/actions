@@ -72,10 +72,10 @@ runs:
         fetch-depth: 0
         token: ${{ inputs.github-token }}
 
-    - name: Setup Node
-      uses: pplancq/actions/setup-node@66e6d183d1cb9c8f9a4bd1a347c13bca6025ba6a # v1.1.3
+    - name: Setup Environment with mise
+      uses: jdx/mise-action@08ae2a091c038e1e05ec6f5115dc5c69d5a2a6b8 # v5
       with:
-        use-mise: 'true'
+        cache: false
 
     - name: Install dependencies
       shell: bash
