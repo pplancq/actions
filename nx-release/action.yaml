@@ -108,15 +108,17 @@ runs:
         SKIP_PUBLISH: ${{ inputs.skip-publish }}
         DEBUG: ${{ inputs.debug }}
       run: |
-        ARGS=("--yes")
+        ARGS=()
 
         if [ "$RELEASE_TYPE" != "stable" ]; then
-          ARGS=("prerelease" "${ARGS[@]}")
+          ARGS=("prerelease")
           ARGS+=("--preid" "$RELEASE_TYPE")
         fi
 
         if [ "$SKIP_PUBLISH" = "true" ]; then
           ARGS+=("--skip-publish")
+        else
+          ARGS+=("--yes")
         fi
 
         if [ "$DRY_RUN" = "true" ]; then
