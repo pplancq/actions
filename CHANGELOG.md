@@ -1,3 +1,22 @@
+## 1.1.4 (2026-10-14)
+
+### 🎉 Features
+
+- **nx-release:** add reusable nx-release composite action ([#109](https://github.com/pplancq/actions/pull/109))
+
+### 🐞 Bug Fixes
+
+- adjust argument handling for release command ([133382e](https://github.com/pplancq/actions/commit/133382e))
+
+### 📦 Dependencies
+
+- **deps:** update jdx/mise-action digest to 08ae2a0 ([#108](https://github.com/pplancq/actions/pull/108))
+- **deps:** update actions/setup-node digest to 949feb2 ([#106](https://github.com/pplancq/actions/pull/106))
+
+### ❤️ Thank You
+
+- Paul PLANCQ
+
 ## 1.1.3 (2026-10-06)
 
 ### 🎉 Features
