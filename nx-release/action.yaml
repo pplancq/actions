@@ -6,6 +6,10 @@ inputs:
     description: 'Release type: stable, alpha, beta or rc'
     required: false
     default: 'stable'
+  first-release:
+    description: 'Run Nx Release with --first-release when no previous release reference is available: true or false'
+    required: false
+    default: 'false'
   dry-run:
     description: 'Run Nx Release in dry-run mode (no commit, tag or publish): true or false'
     required: false
@@ -104,6 +108,7 @@ runs:
         GIT_COMMITTER_NAME: ${{ inputs.git-committer-name }}
         GIT_COMMITTER_EMAIL: ${{ inputs.git-committer-email }}
         RELEASE_TYPE: ${{ inputs.release-type }}
+        FIRST_RELEASE: ${{ inputs.first-release }}
         DRY_RUN: ${{ inputs.dry-run }}
         SKIP_PUBLISH: ${{ inputs.skip-publish }}
         DEBUG: ${{ inputs.debug }}
@@ -113,6 +118,10 @@ runs:
         if [ "$RELEASE_TYPE" != "stable" ]; then
           ARGS=("prerelease")
           ARGS+=("--preid" "$RELEASE_TYPE")
+        fi
+
+        if [ "$FIRST_RELEASE" = "true" ]; then
+          ARGS+=("--first-release")
         fi
 
         if [ "$SKIP_PUBLISH" = "true" ]; then
