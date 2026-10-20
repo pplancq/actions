@@ -23,6 +23,11 @@ on:
         required: false
         type: boolean
         default: false
+      firstRelease:
+        description: First release (allow missing previous release reference)
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -50,5 +55,6 @@ jobs:
           release-type: ${{ inputs.releaseType }}
           dry-run: ${{ inputs.dryRun }}
           debug: ${{ inputs.debug }}
+          first-release: ${{ inputs.firstRelease }}
           skip-build: true
           skip-publish: true
