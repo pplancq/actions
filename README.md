@@ -156,6 +156,7 @@ history is required because Nx Release needs the tags and commits to compute the
 |---|---|---|---|
 | `github-token` | yes | – | Token used by Nx Release to push the release commit and tag and to create the GitHub release. Pass `${{ secrets.GITHUB_TOKEN }}`. |
 | `release-type` | no | `stable` | `stable`, `alpha`, `beta` or `rc`. Any other value fails the action. |
+| `first-release` | no | `false` | `true` adds `--first-release` when no previous release reference is available. |
 | `dry-run` | no | `false` | `true` adds `--dry-run`: nothing is committed, tagged or published. |
 | `debug` | no | `false` | `true` adds `--verbose`. |
 | `build-command` | no | `npm run build` | Command executed after dependency installation. |
@@ -168,6 +169,12 @@ history is required because Nx Release needs the tags and commits to compute the
 
 Composite action inputs are strings: pass booleans as `true` / `false` (a `workflow_dispatch` boolean input is converted
 automatically when used in an expression like `${{ inputs.dryRun }}`).
+
+Enable `first-release` explicitly when Nx cannot find a previous release reference, for example for the first release
+of a repository or a new prerelease channel with no matching prerelease or stable tag. The action does not detect this
+automatically. Nx can fall back to the version in `package.json` and, when no matching tag exists, generate the changelog
+from the beginning of the history. Preview the result with `dry-run: true` before publishing, and leave `first-release`
+disabled for subsequent releases.
 
 ### Caller workflow example
 
@@ -189,6 +196,11 @@ on:
           - alpha
           - beta
           - rc
+      firstRelease:
+        description: First release (allow missing previous release reference)
+        required: false
+        type: boolean
+        default: false
       dryRun:
         description: Dry run
         required: false
@@ -219,6 +231,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           release-type: ${{ inputs.releaseType }}
+          first-release: ${{ inputs.firstRelease }}
           dry-run: ${{ inputs.dryRun }}
           debug: ${{ inputs.debug }}
           build-command: npm run build
