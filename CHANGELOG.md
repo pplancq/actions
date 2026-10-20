@@ -1,3 +1,18 @@
+## 1.1.5 (2026-10-20)
+
+### 🎉 Features
+
+- **nx-release:** add optional first-release flag ([#113](https://github.com/pplancq/actions/pull/113))
+
+### 📦 Dependencies
+
+- **deps:** update jdx/mise-action digest to fc42bcc ([#112](https://github.com/pplancq/actions/pull/112))
+- **deps:** update jdx/mise-action digest to 9b200bc ([#111](https://github.com/pplancq/actions/pull/111))
+
+### ❤️ Thank You
+
+- Paul PLANCQ
+
 ## 1.1.4 (2026-10-14)
 
 ### 🎉 Features
