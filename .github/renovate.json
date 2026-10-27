@@ -5,7 +5,7 @@
   ],
   "packageRules": [
     {
-      "matchFileNames": ["setup-node/**"],
+      "matchFileNames": ["setup-node/**", "renovate-update-limits/**", "nx-release/**"],
       "semanticCommitType": "fix"
     }
   ]
