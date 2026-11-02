@@ -20,6 +20,6 @@
     "release": "nx release"
   },
   "devDependencies": {
-    "@pplancq/nx-release-plugin": "^1.0.8"
+    "@pplancq/nx-release-plugin": "^1.0.9"
   }
 }
