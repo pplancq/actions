@@ -1,3 +1,20 @@
+## 1.1.6 (2026-11-09)
+
+### 🐞 Bug Fixes
+
+- **renovate:** flag action dependency updates as fixes ([cb10049](https://github.com/pplancq/actions/commit/cb10049))
+
+### 📦 Dependencies
+
+- **deps:** update jdx/mise-action digest to b44d12e ([#122](https://github.com/pplancq/actions/pull/122))
+- **deps:** update jdx/mise-action digest to 6612f0e ([#119](https://github.com/pplancq/actions/pull/119))
+- **deps:** update jdx/mise-action digest to 82a612c ([#117](https://github.com/pplancq/actions/pull/117))
+- **deps:** update jdx/mise-action digest to 8418fed ([#114](https://github.com/pplancq/actions/pull/114))
+
+### ❤️ Thank You
+
+- Paul PLANCQ
+
 ## 1.1.5 (2026-10-20)
 
 ### 🎉 Features
